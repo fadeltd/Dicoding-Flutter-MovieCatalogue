@@ -28,15 +28,21 @@ class MoviesApp extends StatelessWidget {
                 }
               },
             ),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == '/detail') {
-          final args = settings.arguments as Map<String, dynamic>;
-          return MaterialPageRoute(
-            builder: (context) => MovieDetail(movie: args['movie']),
-          );
-        }
-        return null;
+        '/detail': (context) {
+          final arguments = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>?;
+
+          if (arguments != null && arguments.containsKey('movie')) {
+            return MovieDetail(movie: arguments['movie']);
+          } else {
+            // Handle the case when arguments or 'movie' is null
+            return const Scaffold(
+              body: Center(
+                child: Text('Invalid movie details'),
+              ),
+            );
+          }
+        },
       },
     );
   }

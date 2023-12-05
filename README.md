@@ -1,6 +1,6 @@
-# movies
+# Movies
 
-A new Flutter project.
+Movie Catalogue
 
 ## Getting Started
 
