@@ -119,77 +119,109 @@ class MovieDetail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '${movie['title']} (${movie['release_date'].substring(0, 4)})'),
+          '${movie['title']} (${movie['release_date'].substring(0, 4)})',
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Stack(
-                children: [
-                  Image.network(
-                    imageUrl(movie['poster_path'], 300),
-                    height: 300,
-                    width: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    left: 10,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey), // Add border
-                        borderRadius: BorderRadius.circular(8),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: SizedBox(
+                  height: 300,
+                  width: 200,
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        imageUrl(movie['poster_path'], 300),
+                        fit: BoxFit.cover,
                       ),
-                      child: Text(
-                        movie['status'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                      Positioned(
+                        bottom: 10,
+                        left: 10,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            movie['status'],
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    right: 10,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Colors.black54,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        '$votePercentage%',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                      Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned(
+                                top: 3, // Adjust top position as needed
+                                right: 3, // Adjust right position as needed
+                                child: ClipOval(
+                                  child: Container(
+                                    width: 34,
+                                    height: 34,
+                                    color: Colors.black,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '$votePercentage',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CircularProgressIndicator(
+                                  value: votePercentage / 100,
+                                  strokeWidth: 6,
+                                  backgroundColor: Colors.black,
+                                  valueColor:
+                                      const AlwaysStoppedAnimation<Color>(
+                                          Colors.green),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              '${_formatReleaseDate(movie['release_date'])} (${movie['production_countries'][0]['iso_3166_1']}) • ${_getGenres(movie['genres'])} • ${_convertToHours(movie['runtime'])}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Overview',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '${movie['overview']}',
-              style: const TextStyle(fontSize: 18),
-            ),
-          ],
+              const SizedBox(height: 20),
+              Text(
+                '${_formatReleaseDate(movie['release_date'])}${movie['production_countries'].isNotEmpty ? ' (${movie['production_countries'][0]['iso_3166_1']})' : ''} • ${_getGenres(movie['genres'])} • ${_convertToHours(movie['runtime'])}',
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Overview',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '${movie['overview']}',
+                style: const TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
         ),
       ),
     );
